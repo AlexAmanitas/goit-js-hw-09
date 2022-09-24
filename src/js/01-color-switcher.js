@@ -9,12 +9,14 @@ refs.startBtn.addEventListener('click', startChangeColor);
 refs.stopBtn.addEventListener('click', stopChangeColor);
 
 function startChangeColor() {
+  refs.startBtn.setAttribute('disabled', 'disabled');
   setBodyColor();
   changeId = setInterval(setBodyColor, 1000);
 }
 
 function stopChangeColor() {
   clearInterval(changeId);
+  refs.startBtn.removeAttribute('disabled');
 }
 
 function setBodyColor() {
