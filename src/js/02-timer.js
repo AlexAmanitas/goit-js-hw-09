@@ -5,13 +5,12 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startButton: document.querySelector('button[data-start]'),
+  // stopButton: document.querySelector('button[data-stop]'),
   days: document.querySelector('span[data-days]'),
   hours: document.querySelector('span[data-hours]'),
   minutes: document.querySelector('span[data-minutes]'),
   seconds: document.querySelector('span[data-seconds]'),
 };
-
-console.log('gdhsdywkkch jdueejdl');
 
 let intervalId = null;
 const currentTime = Date.now();
@@ -31,25 +30,17 @@ const options = {
     }
     refs.startButton.removeAttribute('disabled');
     marckUp(convertMs(deltaTime));
-    refs.startButton.addEventListener('click', deltaTime => {
-      console.log(deltaTime);
-      marckUp(convertMs(timer(deltaTime)));
+    refs.startButton.addEventListener('click', () => {
+      timer(deltaTime);
+      refs.startButton.setAttribute('disabled', 'disabled');
     });
   },
-
-  start: function () {
-    return 5;
-  },
 };
-
-console.log(options.start);
 
 flatpickr(refs.input, options);
 
 function delta(chooseTime) {
-  const deltaferenceTime = chooseTime - currentTime;
-
-  return deltaferenceTime;
+  return chooseTime - currentTime;
 }
 
 function timer(time) {
@@ -98,3 +89,16 @@ function convertMs(ms) {
 // console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
 // console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+
+// let isStopButtonFirstClick = false;
+
+// refs.stopButton.addEventListener('click', () => {
+//   if (isStopButtonFirstClick) {
+//     marckUp(convertMs(0));
+//     flatpickr(refs.input, options);
+//     isStopButtonFirstClick = false;
+//   } else {
+//     clearInterval(intervalId);
+//     isStopButtonFirstClick = true;
+//   }
+// });

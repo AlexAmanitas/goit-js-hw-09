@@ -25,7 +25,8 @@ img {
   border-radius: 5px;
 }
 
-.start-btn {
+.start-btn,
+.stop-btn {
   margin-left: 30px;
   font-size: 20;
   font-weight: 500;
