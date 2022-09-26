@@ -33,7 +33,7 @@ function callPromise(delay, step, amount) {
 }
 
 function createPromise(position, delay) {
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     const shouldResolve = Math.random() > 0.3;
 
     if (shouldResolve) {
