@@ -12,38 +12,52 @@ const refs = {
   seconds: document.querySelector('span[data-seconds]'),
 };
 
+console.log('fhgjg');
+
 let intervalId = null;
-const currentTime = Date.now();
+// const currentTime = Date.now();
 
 refs.startButton.setAttribute('disabled', 'disabled');
 
 const options = {
+  mode: 'single',
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+  // onValueUpdate: date => {
+  //   console.log(date);
+  // },
   onClose: function (selectedDates) {
-    const deltaTime = delta(selectedDates[0]);
-    if (deltaTime < 0) {
+    // const time = selectedDates[0];
+    // const deltaTime = delta(time);
+    console.log(this.selectedDates, fp.selectedDates);
+    if (fp.selectedDates[0] < new Date()) {
       Notify.failure('Please choose a date in the future');
-      return selectedDates;
+      return;
     }
+
     refs.startButton.removeAttribute('disabled');
-    marckUp(convertMs(deltaTime));
+    marckUp(convertMs(selectedDates[0] - Date.now()));
     refs.startButton.addEventListener('click', () => {
-      timer(deltaTime);
+      // const difference = deltaTime;
+      console.log(selectedDates[0] - selectedDates[0]);
+      timer(fp.selectedDates[0] - Date.now());
       refs.startButton.setAttribute('disabled', 'disabled');
     });
   },
 };
 
-flatpickr(refs.input, options);
+const fp = flatpickr(refs.input, options);
 
-function delta(chooseTime) {
-  return chooseTime - currentTime;
-}
+console.log('fp', fp.selectedDates);
+
+// function delta(chooseTime) {
+//   return chooseTime - currentTime;
+// }
 
 function timer(time) {
+  console.log('timer', time);
   marckUp(convertMs(time));
   intervalId = setInterval(() => {
     console.log(time);
