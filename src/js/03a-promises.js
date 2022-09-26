@@ -15,10 +15,10 @@ function onSubmit(event) {
   const delay = +refs.delay.value;
   const step = +refs.step.value;
   const amount = +refs.amount.value;
-  getPromise(delay, step, amount);
+  callPromise(delay, step, amount);
 }
 
-function getPromise(delay, step, amount) {
+function callPromise(delay, step, amount) {
   for (let i = 1; i <= amount; i += 1) {
     let position = i;
     createPromise({ position, delay });
@@ -45,10 +45,3 @@ function createPromise({ position, delay }) {
     }, delay);
   });
 }
-createPromise(2, 1500)
-  .then(({ position, delay }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
