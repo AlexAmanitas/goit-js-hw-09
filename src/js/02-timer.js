@@ -31,8 +31,8 @@ const options = {
   onClose: function (selectedDates) {
     // const time = selectedDates[0];
     // const deltaTime = delta(time);
-    console.log(this.selectedDates, fp.selectedDates);
-    if (fp.selectedDates[0] < new Date()) {
+    console.log(this.selectedDates, selectedDates);
+    if (selectedDates[0] < new Date()) {
       Notify.failure('Please choose a date in the future');
       return;
     }
@@ -42,15 +42,27 @@ const options = {
     refs.startButton.addEventListener('click', () => {
       // const difference = deltaTime;
       console.log(selectedDates[0] - selectedDates[0]);
-      timer(fp.selectedDates[0] - Date.now());
+      timer(selectedDates[0] - Date.now());
       refs.startButton.setAttribute('disabled', 'disabled');
     });
   },
 };
-
 const fp = flatpickr(refs.input, options);
+// flatpickr(refs.input, options);
 
-console.log('fp', fp.selectedDates);
+let secondInput = false;
+
+refs.input.addEventListener('blur', () => {
+  if (secondInput) {
+    fp.destroy();
+    Notify.failure("Can't select value twice");
+    secondInput = false;
+  } else {
+    secondInput = true;
+  }
+
+  console.log('fp', fp, fp.selectedDates);
+});
 
 // function delta(chooseTime) {
 //   return chooseTime - currentTime;
