@@ -64,3 +64,10 @@ img {
 .label {
   font-size: 25px;
 }
+
+.warning {
+  background-color: red;
+  content: 'Warning';
+  font-size: 60px;
+  color: #fafafa;
+}

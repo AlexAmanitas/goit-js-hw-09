@@ -12,7 +12,7 @@ const refs = {
   seconds: document.querySelector('span[data-seconds]'),
 };
 
-console.log('fhgjg');
+// console.log('fhgjg');
 
 let intervalId = null;
 // const currentTime = Date.now();
@@ -41,7 +41,7 @@ const options = {
     marckUp(convertMs(selectedDates[0] - Date.now()));
     refs.startButton.addEventListener('click', () => {
       // const difference = deltaTime;
-      console.log(selectedDates[0] - selectedDates[0]);
+      // console.log(selectedDates[0] - selectedDates[0]);
       timer(selectedDates[0] - Date.now());
       refs.startButton.setAttribute('disabled', 'disabled');
     });
@@ -56,12 +56,13 @@ refs.input.addEventListener('blur', () => {
   if (secondInput) {
     fp.destroy();
     Notify.failure("Can't select value twice");
+    // document.querySelector('body').classList.add('warning');
     secondInput = false;
   } else {
     secondInput = true;
   }
 
-  console.log('fp', fp, fp.selectedDates);
+  // console.log('fp', fp, fp.selectedDates);
 });
 
 // function delta(chooseTime) {
