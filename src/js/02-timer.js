@@ -5,79 +5,77 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 const refs = {
   input: document.querySelector('#datetime-picker'),
   startButton: document.querySelector('button[data-start]'),
-  // stopButton: document.querySelector('button[data-stop]'),
   days: document.querySelector('span[data-days]'),
   hours: document.querySelector('span[data-hours]'),
   minutes: document.querySelector('span[data-minutes]'),
   seconds: document.querySelector('span[data-seconds]'),
 };
 
-// console.log('fhgjg');
+console.log('fhgjg');
 
 let intervalId = null;
 // const currentTime = Date.now();
 
-refs.startButton.setAttribute('disabled', 'disabled');
-
 const options = {
-  mode: 'single',
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  // onValueUpdate: date => {
-  //   console.log(date);
-  // },
-  onClose: function (selectedDates) {
-    // const time = selectedDates[0];
-    // const deltaTime = delta(time);
-    console.log(this.selectedDates, selectedDates);
-    if (selectedDates[0] < new Date()) {
+  onValueUpdate(v) {
+    console.log(v);
+  },
+  onOpen(selectedDates) {
+    selectedDates = [];
+  },
+  onClose(selectedDates) {
+    if (selectedDates[0] < options.defaultDate) {
       Notify.failure('Please choose a date in the future');
       return;
     }
-
     refs.startButton.removeAttribute('disabled');
-    marckUp(convertMs(selectedDates[0] - Date.now()));
-    refs.startButton.addEventListener('click', () => {
-      // const difference = deltaTime;
-      // console.log(selectedDates[0] - selectedDates[0]);
-      timer(selectedDates[0] - Date.now());
-      refs.startButton.setAttribute('disabled', 'disabled');
+
+    marckUp(convertMs(selectedDates[0] - options.defaultDate));
+    const time = selectedDates[0] - options.defaultDate;
+    refs.startButton.addEventListener('click', event => {
+      console.log(event);
+      timer(time);
     });
+    function timer(time) {
+      refs.startButton.setAttribute('disabled', 'disabled');
+      console.log('timer', time);
+      marckUp(convertMs(time));
+      intervalId = setInterval(() => {
+        console.log(time);
+        time -= 1000;
+        marckUp(convertMs(time));
+        if (time < 1000) clearInterval(intervalId);
+      }, 1000);
+
+      // let deltaTime = selectedDates[0] - options.defaultDate;
+      // console.log('timer', deltaTime);
+      // marckUp(convertMs(deltaTime));
+      // intervalId = setInterval(() => {
+      //   console.log(deltaTime);
+      //   deltaTime -= 1000;
+      //   marckUp(convertMs(deltaTime));
+      //   if (deltaTime < 1000) clearInterval(intervalId);
+      // }, 1000);
+    }
+
+    // refs.startButton.setAttribute('disabled', 'disabled');
   },
 };
-const fp = flatpickr(refs.input, options);
-// flatpickr(refs.input, options);
 
-let secondInput = false;
+// refs.startButton.setAttribute('disabled', 'disabled');
 
-refs.input.addEventListener('blur', () => {
-  if (secondInput) {
-    fp.destroy();
-    Notify.failure("Can't select value twice");
-    // document.querySelector('body').classList.add('warning');
-    secondInput = false;
-  } else {
-    secondInput = true;
-  }
+flatpickr(refs.input, options);
 
-  // console.log('fp', fp, fp.selectedDates);
-});
+// refs.startButton.addEventListener('click', event => {
+//   console.log(event);
+// });
 
-// function delta(chooseTime) {
-//   return chooseTime - currentTime;
-// }
-
-function timer(time) {
-  console.log('timer', time);
-  marckUp(convertMs(time));
-  intervalId = setInterval(() => {
-    console.log(time);
-    time -= 1000;
-    marckUp(convertMs(time));
-    if (time < 1000) clearInterval(intervalId);
-  }, 1000);
+function delta(chooseTime) {
+  return chooseTime - currentTime;
 }
 
 function marckUp(obj) {
@@ -112,20 +110,3 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
-// let isStopButtonFirstClick = false;
-
-// refs.stopButton.addEventListener('click', () => {
-//   if (isStopButtonFirstClick) {
-//     marckUp(convertMs(0));
-//     flatpickr(refs.input, options);
-//     isStopButtonFirstClick = false;
-//   } else {
-//     clearInterval(intervalId);
-//     isStopButtonFirstClick = true;
-//   }
-// });
