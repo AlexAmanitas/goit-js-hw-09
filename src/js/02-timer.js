@@ -34,6 +34,7 @@ const options = {
     marckUp(convertMs(time));
 
     refs.startButton.onclick = function () {
+      clearInterval(intervalId);
       timer(time);
       refs.startButton.setAttribute('disabled', 'disabled');
     };
