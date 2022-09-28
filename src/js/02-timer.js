@@ -14,68 +14,44 @@ const refs = {
 console.log('fhgjg');
 
 let intervalId = null;
-// const currentTime = Date.now();
+const currentTime = Date.now();
 
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  onValueUpdate(v) {
-    console.log(v);
-  },
-  onOpen(selectedDates) {
-    selectedDates = [];
-  },
+
   onClose(selectedDates) {
     if (selectedDates[0] < options.defaultDate) {
       Notify.failure('Please choose a date in the future');
       return;
     }
-    refs.startButton.removeAttribute('disabled');
 
-    marckUp(convertMs(selectedDates[0] - options.defaultDate));
     const time = selectedDates[0] - options.defaultDate;
-    refs.startButton.addEventListener('click', event => {
-      console.log(event);
+    refs.startButton.removeAttribute('disabled');
+    console.log(selectedDates);
+    marckUp(convertMs(time));
+
+    refs.startButton.onclick = function () {
       timer(time);
-    });
-    function timer(time) {
       refs.startButton.setAttribute('disabled', 'disabled');
-      console.log('timer', time);
-      marckUp(convertMs(time));
-      intervalId = setInterval(() => {
-        console.log(time);
-        time -= 1000;
-        marckUp(convertMs(time));
-        if (time < 1000) clearInterval(intervalId);
-      }, 1000);
-
-      // let deltaTime = selectedDates[0] - options.defaultDate;
-      // console.log('timer', deltaTime);
-      // marckUp(convertMs(deltaTime));
-      // intervalId = setInterval(() => {
-      //   console.log(deltaTime);
-      //   deltaTime -= 1000;
-      //   marckUp(convertMs(deltaTime));
-      //   if (deltaTime < 1000) clearInterval(intervalId);
-      // }, 1000);
-    }
-
-    // refs.startButton.setAttribute('disabled', 'disabled');
+    };
   },
 };
 
-// refs.startButton.setAttribute('disabled', 'disabled');
-
 flatpickr(refs.input, options);
 
-// refs.startButton.addEventListener('click', event => {
-//   console.log(event);
-// });
-
-function delta(chooseTime) {
-  return chooseTime - currentTime;
+function timer(time) {
+  refs.startButton.setAttribute('disabled', 'disabled');
+  console.log('timer', time);
+  marckUp(convertMs(time));
+  intervalId = setInterval(() => {
+    console.log(time);
+    time -= 1000;
+    marckUp(convertMs(time));
+    if (time < 1000) clearInterval(intervalId);
+  }, 1000);
 }
 
 function marckUp(obj) {
