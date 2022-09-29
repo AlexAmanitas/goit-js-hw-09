@@ -14,7 +14,6 @@ const refs = {
 console.log('fhgjg');
 
 let intervalId = null;
-const currentTime = Date.now();
 
 const options = {
   enableTime: true,
@@ -30,8 +29,7 @@ const options = {
 
     const time = selectedDates[0] - options.defaultDate;
     refs.startButton.removeAttribute('disabled');
-    console.log(selectedDates);
-    marckUp(convertMs(time));
+    // marckUp(convertMs(time));
 
     refs.startButton.onclick = function () {
       clearInterval(intervalId);
